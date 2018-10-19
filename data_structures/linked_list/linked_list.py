@@ -1,4 +1,4 @@
-from linked_list.node import Node
+from data_structures.linked_list.node import Node
 
 
 class LinkedList:
@@ -21,7 +21,7 @@ class LinkedList:
         current = self.head
 
         while index is not 0:
-            current = current.get_value()
+            current = current.get_next()
             index -= 1
 
         return current.get_value()
@@ -45,12 +45,12 @@ class LinkedList:
         return value
 
     def push_back(self, value):
-        node_ = Node(value)
+        node_ = Node(None, value)
         if self.empty():
             self.head = node_
             self.tail = node_
         else:
-            node_.set_next(self.tail)
+            self.tail.set_next(node_)
             self.tail = node_
         self.size += 1
 
@@ -151,7 +151,6 @@ class LinkedList:
             self.pop_back()
         else:
             current = self.head
-
             while current.get_next() is not None:
                 if current.get_value() == value:
                     current.set_next(current.get_next().get_next())
@@ -166,10 +165,9 @@ class LinkedList:
         current = self.head
         self.tail = current
 
-        while current.get_next() is not None:
+        while current is not None:
+            next_ = current.get_next()
             current.set_next(prev)
             prev = current
-            current = current.get_next()
-
-        current.set_next(prev)
-        self.head = current
+            current = next_
+        self.head = prev
